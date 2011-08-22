@@ -21,13 +21,16 @@ public class Hadmyfab
     
     //Sample Data for insertion
     public static Hashtable<String,Integer> UserId = new Hashtable<String,Integer>();
-    static{UserId.put("mohit",1);UserId.put("nikhil",2);UserId.put("naman",3);UserId.put("maullik",4);UserId.put("kedar",5);};
+    static{UserId.put("mohit",1);UserId.put("nikhil",2);UserId.put("naman",3);UserId.put("maullik",4);UserId.put("kedar",5);UserId.put("viranch",6);UserId.put("swair",7);};
     
     public static Hashtable<String,String> Users = new Hashtable<String,String>();
-    static{Users.put("mohit","asda");Users.put("nikhil","sadf");Users.put("naman", "qweos");Users.put("maullik", "werqw");Users.put("kedar", "394iurw");};
+    static{Users.put("mohit","asda");Users.put("nikhil","sadf");Users.put("naman", "qweos");Users.put("maullik", "werqw");Users.put("kedar", "394iurw");Users.put("viranch","r23jl");Users.put("swair","34hjk");};
     
     public static Hashtable<String,String> UserProfile = new Hashtable<String,String>();
-    static{UserProfile.put("mohit", "Mohit Kothari 23 Single");UserProfile.put("nikhil","Nikhil Marathe 32 Single");UserProfile.put("naman","Naman Muley 20 Single");UserProfile.put("maullik","Maullik Padia 20 Single");UserProfile.put("kedar", "Kedar Bhatt 25 Single");}; 
+    static{UserProfile.put("mohit", "Mohit Kothari 23 Single");UserProfile.put("nikhil","Nikhil Marathe 32 Single");UserProfile.put("naman","Naman Muley 20 Single");UserProfile.put("maullik","Maullik Padia 20 Single");UserProfile.put("kedar", "Kedar Bhatt 25 Single");UserProfile.put("viranch","Viranch Mehta 20 Comitted");UserProfile.put("swair","Swair Shah 22 Single");}; 
+    
+    public static Hashtable<String,String> Friends = new Hashtable<String,String>();
+    static{Friends.put("mohit","2 3 4");Friends.put("nikhil","1 3 4");Friends.put("naman","1 2 4");Friends.put("kedar","1 2 3 ");Friends.put("maullik","6 7");Friends.put("viranch","5 7");Friends.put("swair","5 6");};
     
     private static void init()throws Exception{	
     	Class.forName (DRIVER_CLASS).newInstance ();
@@ -91,6 +94,7 @@ public class Hadmyfab
     		PreparedStatement insert = null;
     		String insertUsers = "INSERT INTO USERS(id,username, password) VALUES(?,?,?)";
     		String insertUserProfile = "INSERT INTO USERPROFILE(user_id, first_name, last_name, age, relation) VALUES(?,?,?,?,?)";
+    		String insertFriend = "INSERT INTO FRIENDS(user_id,friend_id) VALUES(?,?)";
     		try{
     			insert = CONN.prepareStatement(insertUsers);
     			Enumeration<String> user = Users.keys();
@@ -111,12 +115,25 @@ public class Hadmyfab
     				insert.setString(1,UserId.get(temp).toString());
     				String data = UserProfile.get(temp);
     				String[] fields = data.split(" ");
-    				insert.setString(2,fields[0]);
-    				insert.setString(3,fields[1]);
-    				insert.setString(4,fields[2]);
+    				insert.setString(2, fields[0]);
+    				insert.setString(3, fields[1]);
+    				insert.setString(4, fields[2]);
     				insert.setString(5, fields[3]);
     				insert.execute();
-    				
+    			}
+    			
+    			insert = CONN.prepareStatement(insertFriend);
+    			Enumeration<String> friend = Friends.keys();
+    			
+    			while(friend.hasMoreElements()){
+    				String temp = friend.nextElement();
+    				insert.setString(1,UserId.get(temp).toString());
+    				String data = Friends.get(temp);
+    				String[] friends_id = data.split(" ");
+    				for(int i=0;i<friends_id.length;i++){
+    					insert.setString(2, friends_id[i]);
+    					insert.execute();
+    				}
     			}
     		}
     		catch(SQLException ex){
