@@ -26,7 +26,7 @@ UserProfile
 
 Friends
 -------
-* CREATE TABLE Friends (
+    * CREATE TABLE Friends (
     user_id INTEGER REFERENCES User(id),
     friend_id INTEGER REFERENCES User(id),
     PRIMARY KEY (user_id,friend_id)
@@ -34,7 +34,7 @@ Friends
 
 WallPosts
 ----------
-* CREATE TABLE WallPosts (
+    * CREATE TABLE WallPosts (
     id INTEGER PRIMARY KEY,
     user_id INTEGER REFERENCES User(id),
     body VARCHAR (200),
@@ -43,7 +43,7 @@ WallPosts
 
 Comments
 --------
-* CREATE TABLE Comments (
+    * CREATE TABLE Comments (
     id INTEGER,
     wall_id INTEGER REFERENCES WallPosts(id),
     userid INTEGER,
