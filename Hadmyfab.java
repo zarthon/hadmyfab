@@ -1,5 +1,6 @@
 
 import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 import java.lang.Integer;
 /**
@@ -23,6 +24,9 @@ public class Hadmyfab
     public static Hashtable<String,Integer> UserId = new Hashtable<String,Integer>();
     static{UserId.put("mohit",1);UserId.put("nikhil",2);UserId.put("naman",3);UserId.put("maullik",4);UserId.put("kedar",5);UserId.put("viranch",6);UserId.put("swair",7);};
     
+    public static Hashtable<String,String> WallId = new Hashtable<String,String>();
+    static{WallId.put("mohit", "1,2,3");WallId.put("nikhil","4,5,6");WallId.put("naman","7,8,9");WallId.put("maullik","10,11,12");WallId.put("kedar", "13,14,15");WallId.put("viranch","16,17,18");WallId.put("swair","19,20,21");};
+    
     public static Hashtable<String,String> Users = new Hashtable<String,String>();
     static{Users.put("mohit","asda");Users.put("nikhil","sadf");Users.put("naman", "qweos");Users.put("maullik", "werqw");Users.put("kedar", "394iurw");Users.put("viranch","r23jl");Users.put("swair","34hjk");};
     
@@ -31,6 +35,12 @@ public class Hadmyfab
     
     public static Hashtable<String,String> Friends = new Hashtable<String,String>();
     static{Friends.put("mohit","2 3 4");Friends.put("nikhil","1 3 4");Friends.put("naman","1 2 4");Friends.put("kedar","1 2 3 ");Friends.put("maullik","6 7");Friends.put("viranch","5 7");Friends.put("swair","5 6");};
+    
+    public static Hashtable<String,String> WallPosts = new Hashtable<String,String>();
+    static{WallPosts.put("mohit","First post,Second pst,sadkjlhsad");WallPosts.put("nikhil", "nikhil post one,post 3,sample post");WallPosts.put("naman","my name is naman,hellp all,hi friends");WallPosts.put("maullik","maullik is my name,maullik loves everyone,love everyone");WallPosts.put("kedar","kedar loves all,i rock,asdlkhr");WallPosts.put("viranch","I am committed,I love all,hell is here");WallPosts.put("swair", "swair is here,helldogs well,asdjlhsdsdf");};
+
+    public static Hashtable<String,String> Comments = new Hashtable<String,String>();
+    static{Comments.put("mohit","4,8,10#first comment,second comment, third");Comments.put("nikhil","1,7,11#nikhil cimment,heko asd,asdf sd");Comments.put("naman","2,6,12#hahaga,my dsas,aejasdfj");Comments.put("maullik","16,19#Maullik first comment,my second comment");Comments.put("swair","13,17#swair is foreign return,swair attended DS");};
     
     private static void init()throws Exception{	
     	Class.forName (DRIVER_CLASS).newInstance ();
@@ -74,8 +84,8 @@ public class Hadmyfab
     	String users = "CREATE TABLE USERS (id INT UNSIGNED PRIMARY KEY, username varchar(40), password varchar(40))";
     	String userProfile = "CREATE TABLE USERPROFILE (user_id INT REFERENCES USERS(id), first_name varchar(40), last_name varchar(40), age INT, relation varchar(10))";
     	String friends = "CREATE TABLE FRIENDS (user_id INT REFERENCES USERS(id), friend_id INT REFERENCES USERS(id), PRIMARY KEY(user_id,friend_id))";
-    	String wallPosts = "CREATE TABLE WALLPOSTS (id INT UNSIGNED PRIMARY KEY, user_id INT REFERENCES USERS(id), body VARCHAR(200), timestamp TIMESTAMP )";
-    	String comments = "CREATE TABLE COMMENTS (id INT UNSIGNED PRIMARY KEY, user_id INT REFERENCES USERS(id), wall_id INT REFERENCES WALLPOSTS(id), body VARCHAR(200), timestamp TIMESTAMP )";
+    	String wallPosts = "CREATE TABLE WALLPOSTS (id INT UNSIGNED PRIMARY KEY, user_id INT REFERENCES USERS(id), body VARCHAR(200), timestamp VARCHAR(100) )";
+    	String comments = "CREATE TABLE COMMENTS (id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT, user_id INT REFERENCES USERS(id), wall_id INT REFERENCES WALLPOSTS(id), body VARCHAR(200), timestamp VARCHAR(100) )";
     	try{
     		create.executeUpdate(users);
     		create.executeUpdate(userProfile);
@@ -95,6 +105,9 @@ public class Hadmyfab
     		String insertUsers = "INSERT INTO USERS(id,username, password) VALUES(?,?,?)";
     		String insertUserProfile = "INSERT INTO USERPROFILE(user_id, first_name, last_name, age, relation) VALUES(?,?,?,?,?)";
     		String insertFriend = "INSERT INTO FRIENDS(user_id,friend_id) VALUES(?,?)";
+    		String insertWallPost = "INSERT INTO WALLPOSTS(id,user_id,body,timestamp) VALUES(?,?,?,?)";
+    		String insertComment = "INSERT INTO COMMENTS(user_id,wall_id,body,timestamp) VALUES(?,?,?,?)";
+    		
     		try{
     			insert = CONN.prepareStatement(insertUsers);
     			Enumeration<String> user = Users.keys();
@@ -135,10 +148,48 @@ public class Hadmyfab
     					insert.execute();
     				}
     			}
+    			
+    			insert = CONN.prepareStatement(insertWallPost);
+    			Enumeration<String> wallpost = WallPosts.keys();   			
+    			while(wallpost.hasMoreElements()){
+    				String temp = wallpost.nextElement();
+    				insert.setString(2,UserId.get(temp).toString());
+    				String data = WallPosts.get(temp);
+    				String[] posts = data.split(",");
+    				String[] wallid = WallId.get(temp).split(",");
+    				for(int i=0;i<posts.length;i++){
+    					insert.setString(1,wallid[i]);
+    					insert.setString(3, posts[i]);
+    					long timestamp = System.currentTimeMillis();
+    					insert.setString(4,String.valueOf(timestamp));
+    					insert.execute();
+    				}
+    			}
+    			
+    			insert = CONN.prepareStatement(insertComment);
+    			Enumeration<String> comment = Comments.keys();
+    			
+    			while(comment.hasMoreElements()){
+    				String temp = comment.nextElement();
+    				insert.setString(1, UserId.get(temp).toString());
+    				String data = Comments.get(temp);
+    				System.out.println(data);
+    				String[] fields = data.split("#");
+    				System.out.println(fields[0]);
+    				String[] wallid = fields[0].split(",");
+    				String[] comments = fields[1].split(",");
+    				
+    				for(int i=0;i<wallid.length;i++){
+    					insert.setString(2,wallid[i]);
+    					insert.setString(3,comments[i]);
+    					long timestamp = System.currentTimeMillis();
+    					insert.setString(4,String.valueOf(timestamp));
+    					insert.execute();
+    				}
+    			}
     		}
     		catch(SQLException ex){
-    			//Reverse the statements as something went wrong
-    			CONN.rollback();
+    			System.out.println(ex);
     			throw ex;
     		}
     		finally{
