@@ -3,11 +3,11 @@ Day 1
 
 * Initialisation of repository
 * Create a file to make connection with sql and also create a sample query to fire at mysql
-* Following schema will be implemented:-
+
+Following schema will be implemented:-
 
 User
 ----
-
 CREATE TABLE User (
     id INTEGER PRIMARY KEY,
     username VARCHAR(64),
