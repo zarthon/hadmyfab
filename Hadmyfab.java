@@ -15,6 +15,32 @@ public class Hadmyfab
         System.out.println ("Database connection established");
     }
     
+    private static void dropTables()throws Exception{
+    	Statement drop = null;
+    	drop = CONN.createStatement();
+    	try{
+    		drop.executeUpdate("DROP TABLE IF EXISTS USERS");
+    	}
+    	finally{
+    		drop.close();
+    	}
+    	
+    }
+    
+    private static void createTables()throws Exception{
+    	Statement create = null;
+    	create = CONN.createStatement();
+    	
+    	String query = "CREATE TABLE USERS (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, username varchar(40), password varchar(40))";
+    	try{
+    		create.executeUpdate(query);
+    	}
+    	finally{
+    		
+    		create.close();
+    	}
+    }
+    
     private static void createSampleTable() throws SQLException{
         Statement sample = null;
 		sample = CONN.createStatement();
@@ -33,6 +59,8 @@ public class Hadmyfab
     {
         try{
             init();
+            dropTables();
+            createTables();
             createSampleTable();
         }
         catch (Exception e)
