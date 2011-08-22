@@ -1,7 +1,14 @@
 
 import java.sql.*;
 
-
+/**
+ * This is a sample application has basically 2 usage:-
+ * 1) Demonstrate the use of jdbc driver for mysql by connecting to server, droping tables and creating tables and also
+ * populate them
+ * 2) Also run a mapred job using hadoop framework buy generating something with the above data and then output something
+ * relevant.
+ * 
+ */
 
 public class Hadmyfab
 {
@@ -69,7 +76,15 @@ public class Hadmyfab
     	}
     }
     
-
+    public static void insertData() throws SQLException{
+    		PreparedStatement insert = null;
+    		String insertUsers = "INSERT INTO USERS(username, password) VALUES(?,?)"
+    		try{
+    			insert = CONN.prepareStatement("")
+    			
+    		}
+    	
+    }
     public static void main (String[] args)
     {
         try{

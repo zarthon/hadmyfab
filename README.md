@@ -3,6 +3,9 @@ Day 1
 
 * Initialisation of repository
 * Create a file to make connection with sql and also create a sample query to fire at mysql
+* Created functions to initialise connection, drop tables if already present, create new tables, shutdown the connection
+  to give a more OO approach to application...:D
+* Using Eclipse IDE for developing the application
 
 Following schema will be implemented:-
 
