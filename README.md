@@ -8,7 +8,7 @@ Following schema will be implemented:-
 
 User
 ----
-CREATE TABLE User (
+* CREATE TABLE User (
     id INTEGER PRIMARY KEY,
     username VARCHAR(64),
     password VARCHAR(64)
@@ -16,7 +16,7 @@ CREATE TABLE User (
 
 UserProfile
 -----------
-CREATE TABLE UserProfile (
+* CREATE TABLE UserProfile (
     user_id INTEGER REFERENCES User(id),
     first_name VARCHAR(50),
     last_name VARCHAR(50),
@@ -26,7 +26,7 @@ CREATE TABLE UserProfile (
 
 Friends
 -------
-CREATE TABLE Friends (
+* CREATE TABLE Friends (
     user_id INTEGER REFERENCES User(id),
     friend_id INTEGER REFERENCES User(id),
     PRIMARY KEY (user_id,friend_id)
@@ -34,7 +34,7 @@ CREATE TABLE Friends (
 
 WallPosts
 ----------
-CREATE TABLE WallPosts (
+* CREATE TABLE WallPosts (
     id INTEGER PRIMARY KEY,
     user_id INTEGER REFERENCES User(id),
     body VARCHAR (200),
@@ -43,7 +43,7 @@ CREATE TABLE WallPosts (
 
 Comments
 --------
-CREATE TABLE Comments (
+* CREATE TABLE Comments (
     id INTEGER,
     wall_id INTEGER REFERENCES WallPosts(id),
     userid INTEGER,
