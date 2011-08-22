@@ -4,6 +4,17 @@ import java.sql.*;
 public class Hadmyfab
 {
     public static Connection CONN = null;
+    public static final String URL="jdbc:mysql://localhost/junkdb";
+    public static final String USERNAME = "haduser";
+    public static final String PASSWORD = "pass";
+    public static final String DRIVER_CLASS = "com.mysql.jdbc.Driver";
+    
+    private static void init()throws Exception{	
+    	Class.forName (DRIVER_CLASS).newInstance ();
+        CONN = DriverManager.getConnection (URL, USERNAME, PASSWORD);
+        System.out.println ("Database connection established");
+    }
+    
     private static void createSampleTable() throws SQLException{
         Statement sample = null;
 		sample = CONN.createStatement();
@@ -21,12 +32,7 @@ public class Hadmyfab
     public static void main (String[] args)
     {
         try{
-            String userName = "haduser";
-            String password = "pass";
-            String url = "jdbc:mysql://localhost/junkdb";
-            Class.forName ("com.mysql.jdbc.Driver").newInstance ();
-            CONN = DriverManager.getConnection (url, userName, password);
-            System.out.println ("Database connection established");
+            init();
             createSampleTable();
         }
         catch (Exception e)
