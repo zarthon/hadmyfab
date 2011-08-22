@@ -11,6 +11,14 @@ Day 1
 
 Following schema will be implemented:-
 
+TODO
+-----
+    Show aggregate data on the screen like facebook
+    Create a map reduce job something like, outputting a wordcount on each users wall
+        The above requires creating a new table aggregate something like (userid,aggregated string of wall)
+        Then do a mapred job of word count for each userid and store the result in db as userid,word,count with pk as
+        (userid,word)
+
 User
 ----
     CREATE TABLE User (

@@ -1,8 +1,12 @@
 
-import java.sql.*;
-import java.sql.Date;
-import java.util.*;
-import java.lang.Integer;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Enumeration;
+import java.util.Hashtable;
+
 /**
  * This is a sample application has basically 2 usage:-
  * 1) Demonstrate the use of jdbc driver for mysql by connecting to server, droping tables and creating tables and also
