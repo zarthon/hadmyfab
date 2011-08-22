@@ -20,8 +20,14 @@ public class Hadmyfab
     	drop = CONN.createStatement();
     	try{
     		drop.executeUpdate("DROP TABLE IF EXISTS USERS");
+    		drop.executeUpdate("DROP TABLE IF EXISTS USERPROFILE");
+    		drop.executeUpdate("DROP TABLE IF EXISTS FRIENDS");
+    		drop.executeUpdate("DROP TABLE IF EXISTS WALLPOSTS");
+    		drop.executeUpdate("DROP TABLE IF EXISTS COMMENTS");
+    		System.out.println("Tables Dropped");
     	}
     	finally{
+    		
     		drop.close();
     	}
     	
@@ -31,9 +37,18 @@ public class Hadmyfab
     	Statement create = null;
     	create = CONN.createStatement();
     	
-    	String query = "CREATE TABLE USERS (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, username varchar(40), password varchar(40))";
+    	String users = "CREATE TABLE USERS (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, username varchar(40), password varchar(40))";
+    	String userProfile = "CREATE TABLE USERPROFILE (user_id INT REFERENCES USERS(id), first_name varchar(40), last_name varchar(40), age INT, relation varchar(10))";
+    	String friends = "CREATE TABLE FRIENDS (user_id INT REFERENCES USERS(id), friend_id INT REFERENCES USERS(id), PRIMARY KEY(user_id,friend_id))";
+    	String wallPosts = "CREATE TABLE WALLPOSTS (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, user_id INT REFERENCES USERS(id), body VARCHAR(200), timestamp TIMESTAMP )";
+    	String comments = "CREATE TABLE COMMENTS (id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, user_id INT REFERENCES USERS(id), wall_id INT REFERENCES WALLPOSTS(id), body VARCHAR(200), timestamp TIMESTAMP )";
     	try{
-    		create.executeUpdate(query);
+    		create.executeUpdate(users);
+    		create.executeUpdate(userProfile);
+    		create.executeUpdate(friends);
+    		create.executeUpdate(wallPosts);
+    		create.executeUpdate(comments);
+    		System.out.println("Tables created");
     	}
     	finally{
     		
