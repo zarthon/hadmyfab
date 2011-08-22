@@ -65,6 +65,7 @@ public class Hadmyfab
     		drop.executeUpdate("DROP TABLE IF EXISTS FRIENDS");
     		drop.executeUpdate("DROP TABLE IF EXISTS WALLPOSTS");
     		drop.executeUpdate("DROP TABLE IF EXISTS COMMENTS");
+    		drop.executeUpdate("DROP TABLE IF EXISTS AGGREGATE");
     		System.out.println("Tables Dropped");
     	}
     	finally{
@@ -94,12 +95,14 @@ public class Hadmyfab
     	String friends = "CREATE TABLE FRIENDS (user_id INT REFERENCES USERS(id), friend_id INT REFERENCES USERS(id), PRIMARY KEY(user_id,friend_id))";
     	String wallPosts = "CREATE TABLE WALLPOSTS (id INT UNSIGNED PRIMARY KEY, user_id INT REFERENCES USERS(id), body VARCHAR(200), timestamp VARCHAR(100) )";
     	String comments = "CREATE TABLE COMMENTS (id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT, user_id INT REFERENCES USERS(id), wall_id INT REFERENCES WALLPOSTS(id), body VARCHAR(200), timestamp VARCHAR(100) )";
+    	String aggregate = "CREATE TABLE AGGREGATE (id INT UNSIGNED PRIMARY KEY, aggregate VARCHAR(1000))";
     	try{
     		create.executeUpdate(users);
     		create.executeUpdate(userProfile);
     		create.executeUpdate(friends);
     		create.executeUpdate(wallPosts);
     		create.executeUpdate(comments);
+    		create.executeUpdate(aggregate);
     		System.out.println("Tables created");
     	}
     	finally{
@@ -214,9 +217,11 @@ public class Hadmyfab
     	String getFriends = "Select friend_id from FRIENDS where user_id=";
     	String getWall = "Select id, body, timestamp from WALLPOSTS where user_id=";
     	String getComment = "Select body,user_id,timestamp from COMMENTS where wall_id=";
-    	
+    	String insertAggregate = "INSERT INTO AGGREGATE(id,aggregate) VALUES(?,?)";
+    	PreparedStatement insert = CONN.prepareStatement(insertAggregate);
     	Enumeration<String> user = UserId.keys();
     	while(user.hasMoreElements()){
+    		String aggregate = "";
     		String username = user.nextElement();
     		String user_id = UserId.get(username).toString();
     		System.out.println("USER: "+username+" WALL!!");
@@ -229,10 +234,12 @@ public class Hadmyfab
         		while(res.next()){
         			String wall_id = res.getString("id");
         			System.out.println(UserRId.get(frnd_id)+" posted: "+res.getString("body"));
+        			aggregate += res.getString("body")+" ";
         			display_com.executeQuery(getComment+wall_id);
         			ResultSet coment_set = display_com.getResultSet();
         			while(coment_set.next()){
         				System.out.println("\t"+UserRId.get(coment_set.getString("user_id"))+" commented: "+coment_set.getString("body"));
+        				aggregate += coment_set.getString("body") + " ";
         			}
         			System.out.println("-------------------------------------------------------------------------");
         		}
@@ -242,13 +249,18 @@ public class Hadmyfab
     		while(res.next()){
     			String wall_id = res.getString("id");
     			System.out.println("You posted: "+res.getString("body"));
+    			aggregate += res.getString("body");
     			display_com.executeQuery(getComment+wall_id);
     			ResultSet coment_set = display_com.getResultSet();
     			while(coment_set.next()){
     				System.out.println("\t"+UserRId.get(coment_set.getString("user_id"))+" commented: "+coment_set.getString("body"));
+    				aggregate += coment_set.getString("body");
     			}
     			System.out.println("-------------------------------------------------------------------------");
     		}
+    		insert.setString(1, user_id);
+    		insert.setString(2,aggregate);
+    		insert.execute();
     		System.out.println("=======================================================================");
     	}
     	
