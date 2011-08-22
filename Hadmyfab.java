@@ -6,12 +6,9 @@ public class Hadmyfab
     public static Connection CONN = null;
     private static void createSampleTable() throws SQLException{
         Statement sample = null;
-		try {
-			sample = CONN.createStatement();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-        int count;
+		sample = CONN.createStatement();
+		
+		int count;
         sample.executeUpdate("DROP TABLE IF EXISTS sample");
         sample.executeUpdate("CREATE TABLE sample ( id INT UNSIGNED NOT NULL AUTO_INCREMENT,PRIMARY KEY (id),name CHAR(40))");
         count = sample.executeUpdate ("INSERT INTO sample (name)"
