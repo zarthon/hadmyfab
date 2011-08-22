@@ -2,6 +2,7 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Enumeration;
@@ -27,6 +28,9 @@ public class Hadmyfab
     //Sample Data for insertion
     public static Hashtable<String,Integer> UserId = new Hashtable<String,Integer>();
     static{UserId.put("mohit",1);UserId.put("nikhil",2);UserId.put("naman",3);UserId.put("maullik",4);UserId.put("kedar",5);UserId.put("viranch",6);UserId.put("swair",7);};
+    
+    public static Hashtable<String,String> UserRId = new Hashtable<String,String>();
+    static{UserRId.put("1","mohit");UserRId.put("2","nikhil");UserRId.put("3","naman");UserRId.put("4","maullik");UserRId.put("5","kedar");UserRId.put("6","viranch");UserRId.put("7","swair");};
     
     public static Hashtable<String,String> WallId = new Hashtable<String,String>();
     static{WallId.put("mohit", "1,2,3");WallId.put("nikhil","4,5,6");WallId.put("naman","7,8,9");WallId.put("maullik","10,11,12");WallId.put("kedar", "13,14,15");WallId.put("viranch","16,17,18");WallId.put("swair","19,20,21");};
@@ -177,9 +181,9 @@ public class Hadmyfab
     				String temp = comment.nextElement();
     				insert.setString(1, UserId.get(temp).toString());
     				String data = Comments.get(temp);
-    				System.out.println(data);
+    				
     				String[] fields = data.split("#");
-    				System.out.println(fields[0]);
+    				
     				String[] wallid = fields[0].split(",");
     				String[] comments = fields[1].split(",");
     				
@@ -202,6 +206,54 @@ public class Hadmyfab
     		}
     	
     }
+    
+    public static void displayData() throws SQLException{
+    	Statement display = CONN.createStatement();
+    	Statement display_com = CONN.createStatement();
+    	Statement obt_frnd = CONN.createStatement();
+    	String getFriends = "Select friend_id from FRIENDS where user_id=";
+    	String getWall = "Select id, body, timestamp from WALLPOSTS where user_id=";
+    	String getComment = "Select body,user_id,timestamp from COMMENTS where wall_id=";
+    	
+    	Enumeration<String> user = UserId.keys();
+    	while(user.hasMoreElements()){
+    		String username = user.nextElement();
+    		String user_id = UserId.get(username).toString();
+    		System.out.println("USER: "+username+" WALL!!");
+    		obt_frnd.executeQuery(getFriends+user_id);
+    		ResultSet frnd_set = obt_frnd.getResultSet();
+    		while(frnd_set.next()){
+    			String frnd_id = frnd_set.getString("friend_id");
+    			display.executeQuery(getWall+frnd_id);
+        		ResultSet res = display.getResultSet();
+        		while(res.next()){
+        			String wall_id = res.getString("id");
+        			System.out.println(UserRId.get(frnd_id)+" posted: "+res.getString("body"));
+        			display_com.executeQuery(getComment+wall_id);
+        			ResultSet coment_set = display_com.getResultSet();
+        			while(coment_set.next()){
+        				System.out.println("\t"+UserRId.get(coment_set.getString("user_id"))+" commented: "+coment_set.getString("body"));
+        			}
+        			System.out.println("-------------------------------------------------------------------------");
+        		}
+    		}
+    		display.executeQuery(getWall+user_id);
+    		ResultSet res = display.getResultSet();
+    		while(res.next()){
+    			String wall_id = res.getString("id");
+    			System.out.println("You posted: "+res.getString("body"));
+    			display_com.executeQuery(getComment+wall_id);
+    			ResultSet coment_set = display_com.getResultSet();
+    			while(coment_set.next()){
+    				System.out.println("\t"+UserRId.get(coment_set.getString("user_id"))+" commented: "+coment_set.getString("body"));
+    			}
+    			System.out.println("-------------------------------------------------------------------------");
+    		}
+    		System.out.println("=======================================================================");
+    	}
+    	
+    }
+    
     public static void main (String[] args)
     {
         try{
@@ -209,6 +261,7 @@ public class Hadmyfab
             dropTables();
             createTables();
             insertData();
+            displayData();
         }
         catch (Exception e)
         {
