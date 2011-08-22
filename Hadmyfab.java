@@ -1,6 +1,8 @@
 
 import java.sql.*;
 
+
+
 public class Hadmyfab
 {
     public static Connection CONN = null;
@@ -33,6 +35,17 @@ public class Hadmyfab
     	
     }
     
+    public static void shutdown() throws Exception{
+    	try{
+    		CONN.close();
+    	}
+    	catch(Exception x){
+    		
+    		System.out.println("Error occured in closing the mysql server connection: "+ x.toString());
+    	}
+    	
+    	
+    }
     private static void createTables()throws Exception{
     	Statement create = null;
     	create = CONN.createStatement();
@@ -56,19 +69,6 @@ public class Hadmyfab
     	}
     }
     
-    private static void createSampleTable() throws SQLException{
-        Statement sample = null;
-		sample = CONN.createStatement();
-		
-		int count;
-        sample.executeUpdate("DROP TABLE IF EXISTS sample");
-        sample.executeUpdate("CREATE TABLE sample ( id INT UNSIGNED NOT NULL AUTO_INCREMENT,PRIMARY KEY (id),name CHAR(40))");
-        count = sample.executeUpdate ("INSERT INTO sample (name)"
-                                    + " VALUES"
-                                    + "('haha')");
-        sample.close();
-        System.out.println(count);
-    }
 
     public static void main (String[] args)
     {
@@ -76,7 +76,6 @@ public class Hadmyfab
             init();
             dropTables();
             createTables();
-            createSampleTable();
         }
         catch (Exception e)
         {
@@ -84,15 +83,10 @@ public class Hadmyfab
         }
         finally
         {
-            if (CONN != null)
-            {
-                try
-                {
-                    CONN.close ();
-                    System.out.println ("Database connection terminated");
-                }
-                catch (Exception e) { /* ignore close errors */ }
+            try{
+            	shutdown();
             }
+            catch (Exception e){/*ignore all */}
         }
     }
 
