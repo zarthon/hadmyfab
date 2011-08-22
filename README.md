@@ -6,6 +6,8 @@ Day 1
 * Created functions to initialise connection, drop tables if already present, create new tables, shutdown the connection
   to give a more OO approach to application...:D
 * Using Eclipse IDE for developing the application
+* Completed the insertion part.. final database is now ready for a mapred job.
+* Need to figure out the mapper and reducer job related to this data.
 
 Following schema will be implemented:-
 
