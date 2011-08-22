@@ -94,7 +94,7 @@ public class Hadmyfab
     		try{
     			insert = CONN.prepareStatement(insertUsers);
     			Enumeration<String> user = Users.keys();
-    			System.out.println(Users.isEmpty());
+    			
     			while(user.hasMoreElements()){
     				String temp = user.nextElement();
     				insert.setString(2, temp);
@@ -102,8 +102,22 @@ public class Hadmyfab
     				insert.setString(1,UserId.get(temp).toString());
     				insert.execute();
     			}
-    			insert = CONN.prepareStatement(insertUserProfile);
     			
+    			insert = CONN.prepareStatement(insertUserProfile);
+    			Enumeration<String> userProf = UserProfile.keys();
+    			
+    			while(userProf.hasMoreElements()){
+    				String temp = userProf.nextElement();
+    				insert.setString(1,UserId.get(temp).toString());
+    				String data = UserProfile.get(temp);
+    				String[] fields = data.split(" ");
+    				insert.setString(2,fields[0]);
+    				insert.setString(3,fields[1]);
+    				insert.setString(4,fields[2]);
+    				insert.setString(5, fields[3]);
+    				insert.execute();
+    				
+    			}
     		}
     		catch(SQLException ex){
     			//Reverse the statements as something went wrong
