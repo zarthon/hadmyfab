@@ -3,16 +3,34 @@ import java.sql.*;
 
 public class Hadmyfab
 {
+    public static Connection CONN = null;
+    private static void createSampleTable() throws SQLException{
+        Statement sample = null;
+		try {
+			sample = CONN.createStatement();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+        int count;
+        sample.executeUpdate("DROP TABLE IF EXISTS sample");
+        sample.executeUpdate("CREATE TABLE sample ( id INT UNSIGNED NOT NULL AUTO_INCREMENT,PRIMARY KEY (id),name CHAR(40))");
+        count = sample.executeUpdate ("INSERT INTO sample (name)"
+                                    + " VALUES"
+                                    + "('haha')");
+        sample.close();
+        System.out.println(count);
+    }
+
     public static void main (String[] args)
     {
-        Connection conn = null;
         try{
             String userName = "haduser";
             String password = "pass";
             String url = "jdbc:mysql://localhost/junkdb";
             Class.forName ("com.mysql.jdbc.Driver").newInstance ();
-            conn = DriverManager.getConnection (url, userName, password);
+            CONN = DriverManager.getConnection (url, userName, password);
             System.out.println ("Database connection established");
+            createSampleTable();
         }
         catch (Exception e)
         {
@@ -20,11 +38,11 @@ public class Hadmyfab
         }
         finally
         {
-            if (conn != null)
+            if (CONN != null)
             {
                 try
                 {
-                    conn.close ();
+                    CONN.close ();
                     System.out.println ("Database connection terminated");
                 }
                 catch (Exception e) { /* ignore close errors */ }
