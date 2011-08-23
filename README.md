@@ -16,7 +16,15 @@ Day 1
 * Completed the insertion part.. final database is now ready for a mapred job.
 * Need to figure out the mapper and reducer job related to this data.
 
-Following schema will be implemented:-
+Day 2
+=====
+* Started on figuring out on how to implement Mapper and Reducer
+* Found some examples and tutorials explaining the same, and took their reference to implement the same.
+* Current implementation is not tested, messy, not clean and involves lot of bugs
+* Instead of combining population and mapred job into one, distributed it over the 2 files
+* Trying to debug the mapred job
+* Mapping done successfully, Reduce working perfectly and also added the snapshots of mysql
+* Application is ready with respect to Requirements...:D
 
 TODO
 -----
@@ -25,6 +33,8 @@ TODO
         The above requires creating a new table aggregate something like (userid,aggregated string of wall)
         Then do a mapred job of word count for each userid and store the result in db as userid,word,count with pk as
         (userid,word)
+
+Following schema will be implemented:-
 
 User
 ----
@@ -72,12 +82,3 @@ Comments
     );
 
 
-Day 2
-=====
-* Started on figuring out on how to implement Mapper and Reducer
-* Found some examples and tutorials explaining the same, and took their reference to implement the same.
-* Current implementation is not tested, messy, not clean and involves lot of bugs
-* Instead of combining population and mapred job into one, distributed it over the 2 files
-* Trying to debug the mapred job
-* Mapping done successfully, Reduce working perfectly and also added the snapshots of mysql
-* Application is ready with respect to Requirements...:D
