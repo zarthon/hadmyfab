@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
@@ -18,12 +17,8 @@ import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapred.MapReduceBase;
 import org.apache.hadoop.mapred.Mapper;
 import org.apache.hadoop.mapred.Reducer;
-//import org.apache.hadoop.mapreduce.Mapper;
-//import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapred.OutputCollector;
 import org.apache.hadoop.mapred.Reporter;
-//import org.apache.hadoop.mapred.jobcontrol.Job;
-import org.apache.hadoop.mapred.lib.LongSumReducer;
 import org.apache.hadoop.mapred.lib.db.DBConfiguration;
 import org.apache.hadoop.mapred.lib.db.DBInputFormat;
 import org.apache.hadoop.mapred.lib.db.DBOutputFormat;
@@ -108,7 +103,7 @@ public class MapredJob{
             throws IOException {
         	StringTokenizer itr = new StringTokenizer(value.aggregate);
         	while(itr.hasMoreElements()){
-        		word.set(itr.nextToken());
+        		word.set(itr.nextToken().toLowerCase());
         		output.collect(new Text(value.user_id+"#"+word),ONE);
         	}
         }
@@ -124,13 +119,10 @@ public class MapredJob{
     	    while(values.hasNext()) {
     	    	sum += values.next().get();
     	    }
-    	    System.out.println(sum);
-    	    System.out.println(key);
     	    String[] temp = key.toString().split("#");
     	    output.collect(new AggregateWordCount(temp[0],temp[1],sum),n);
     	}
     }
-    
     
 	public static void main(String[] args) throws Exception{
     	String[] fields = {"id","word","count"};
@@ -139,7 +131,6 @@ public class MapredJob{
     	jobconf.setJobName("Hadmyfab Mapred Job");
     	jobconf.setMapperClass(AggregateMapper.class);
     	jobconf.setReducerClass(AggregateReducer.class);
-    	jobconf.setCombinerClass(LongSumReducer.class);
     	DBConfiguration.configureDB(jobconf, "com.mysql.jdbc.Driver", "jdbc:mysql://localhost/junkdb","haduser","pass");
     	DBInputFormat.setInput(jobconf,AggregateRecord.class,"AGGREGATE",null,"id",agg_fields);
     	DBOutputFormat.setOutput(jobconf, "RESULT",fields);
