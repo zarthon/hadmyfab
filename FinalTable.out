@@ -1,0 +1,222 @@
+mysql> select * from AGGREGATE;
++----+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id | aggregate                                                                                                                                                                                                                                                      |
++----+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|  1 | nikhil post one first comment post 3 sample post my dsas my name is naman heko asd hellp all second comment hi friends maullik is my name  third maullik loves everyone asdf sd love everyone aejasdfj First post nikhil cimment Second pst hahaga sadkjlhsad  |
+|  2 | First post nikhil cimment Second pst hahaga sadkjlhsad my name is naman heko asd hellp all second comment hi friends maullik is my name  third maullik loves everyone asdf sd love everyone aejasdfj nikhil post one first comment post 3 sample post my dsas  |
+|  3 | First post nikhil cimment Second pst hahaga sadkjlhsad nikhil post one first comment post 3 sample post my dsas maullik is my name  third maullik loves everyone asdf sd love everyone aejasdfj my name is naman heko asd hellp all second comment hi friends  |
+|  4 | i am committed Maullik first comment i love all swair attended DS hell is here swair is here my second comment helldogs well asdjlhsdsdf maullik is my name  third maullik loves everyone asdf sd love everyone aejasdfj                                       |
+|  5 | First post nikhil cimment Second pst hahaga sadkjlhsad nikhil post one first comment post 3 sample post my dsas my name is naman heko asd hellp all second comment hi friends kedar loves all swair is foreign return i rock asdlkhr                           |
+|  6 | kedar loves all swair is foreign return i rock asdlkhr swair is here my second comment helldogs well asdjlhsdsdf i am committed Maullik first comment i love all swair attended DS hell is here                                                                |
+|  7 | kedar loves all swair is foreign return i rock asdlkhr i am committed Maullik first comment i love all swair attended DS hell is here swair is here my second comment helldogs well asdjlhsdsdf                                                                |
++----+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+7 rows in set (0.00 sec)
+
+mysql> select * from RESULT;
++----+-------------+-------+
+| id | word        | count |
++----+-------------+-------+
+|  1 | 3           |     1 |
+|  1 | aejasdfj    |     1 |
+|  1 | all         |     1 |
+|  1 | asd         |     1 |
+|  1 | asdf        |     1 |
+|  1 | cimment     |     1 |
+|  1 | comment     |     2 |
+|  1 | dsas        |     1 |
+|  1 | everyone    |     2 |
+|  1 | first       |     2 |
+|  1 | friends     |     1 |
+|  1 | hahaga      |     1 |
+|  1 | heko        |     1 |
+|  1 | hellp       |     1 |
+|  1 | hi          |     1 |
+|  1 | is          |     2 |
+|  1 | love        |     1 |
+|  1 | loves       |     1 |
+|  1 | maullik     |     2 |
+|  1 | my          |     3 |
+|  1 | naman       |     1 |
+|  1 | name        |     2 |
+|  1 | nikhil      |     2 |
+|  1 | one         |     1 |
+|  1 | post        |     4 |
+|  1 | pst         |     1 |
+|  1 | sadkjlhsad  |     1 |
+|  1 | sample      |     1 |
+|  1 | sd          |     1 |
+|  1 | second      |     2 |
+|  1 | third       |     1 |
+|  2 | 3           |     1 |
+|  2 | aejasdfj    |     1 |
+|  2 | all         |     1 |
+|  2 | asd         |     1 |
+|  2 | asdf        |     1 |
+|  2 | cimment     |     1 |
+|  2 | comment     |     2 |
+|  2 | dsas        |     1 |
+|  2 | everyone    |     2 |
+|  2 | first       |     2 |
+|  2 | friends     |     1 |
+|  2 | hahaga      |     1 |
+|  2 | heko        |     1 |
+|  2 | hellp       |     1 |
+|  2 | hi          |     1 |
+|  2 | is          |     2 |
+|  2 | love        |     1 |
+|  2 | loves       |     1 |
+|  2 | maullik     |     2 |
+|  2 | my          |     3 |
+|  2 | naman       |     1 |
+|  2 | name        |     2 |
+|  2 | nikhil      |     2 |
+|  2 | one         |     1 |
+|  2 | post        |     4 |
+|  2 | pst         |     1 |
+|  2 | sadkjlhsad  |     1 |
+|  2 | sample      |     1 |
+|  2 | sd          |     1 |
+|  2 | second      |     2 |
+|  2 | third       |     1 |
+|  3 | 3           |     1 |
+|  3 | aejasdfj    |     1 |
+|  3 | all         |     1 |
+|  3 | asd         |     1 |
+|  3 | asdf        |     1 |
+|  3 | cimment     |     1 |
+|  3 | comment     |     2 |
+|  3 | dsas        |     1 |
+|  3 | everyone    |     2 |
+|  3 | first       |     2 |
+|  3 | friends     |     1 |
+|  3 | hahaga      |     1 |
+|  3 | heko        |     1 |
+|  3 | hellp       |     1 |
+|  3 | hi          |     1 |
+|  3 | is          |     2 |
+|  3 | love        |     1 |
+|  3 | loves       |     1 |
+|  3 | maullik     |     2 |
+|  3 | my          |     3 |
+|  3 | naman       |     1 |
+|  3 | name        |     2 |
+|  3 | nikhil      |     2 |
+|  3 | one         |     1 |
+|  3 | post        |     4 |
+|  3 | pst         |     1 |
+|  3 | sadkjlhsad  |     1 |
+|  3 | sample      |     1 |
+|  3 | sd          |     1 |
+|  3 | second      |     2 |
+|  3 | third       |     1 |
+|  4 | aejasdfj    |     1 |
+|  4 | all         |     1 |
+|  4 | am          |     1 |
+|  4 | asdf        |     1 |
+|  4 | asdjlhsdsdf |     1 |
+|  4 | attended    |     1 |
+|  4 | comment     |     2 |
+|  4 | committed   |     1 |
+|  4 | ds          |     1 |
+|  4 | everyone    |     2 |
+|  4 | first       |     1 |
+|  4 | hell        |     1 |
+|  4 | helldogs    |     1 |
+|  4 | here        |     2 |
+|  4 | i           |     2 |
+|  4 | is          |     3 |
+|  4 | love        |     2 |
+|  4 | loves       |     1 |
+|  4 | maullik     |     3 |
+|  4 | my          |     2 |
+|  4 | name        |     1 |
+|  4 | sd          |     1 |
+|  4 | second      |     1 |
+|  4 | swair       |     2 |
+|  4 | third       |     1 |
+|  4 | well        |     1 |
+|  5 | 3           |     1 |
+|  5 | all         |     2 |
+|  5 | asd         |     1 |
+|  5 | asdlkhr     |     1 |
+|  5 | cimment     |     1 |
+|  5 | comment     |     2 |
+|  5 | dsas        |     1 |
+|  5 | first       |     2 |
+|  5 | foreign     |     1 |
+|  5 | friends     |     1 |
+|  5 | hahaga      |     1 |
+|  5 | heko        |     1 |
+|  5 | hellp       |     1 |
+|  5 | hi          |     1 |
+|  5 | i           |     1 |
+|  5 | is          |     2 |
+|  5 | kedar       |     1 |
+|  5 | loves       |     1 |
+|  5 | my          |     2 |
+|  5 | naman       |     1 |
+|  5 | name        |     1 |
+|  5 | nikhil      |     2 |
+|  5 | one         |     1 |
+|  5 | post        |     4 |
+|  5 | pst         |     1 |
+|  5 | return      |     1 |
+|  5 | rock        |     1 |
+|  5 | sadkjlhsad  |     1 |
+|  5 | sample      |     1 |
+|  5 | second      |     2 |
+|  5 | swair       |     1 |
+|  6 | all         |     2 |
+|  6 | am          |     1 |
+|  6 | asdjlhsdsdf |     1 |
+|  6 | asdlkhr     |     1 |
+|  6 | attended    |     1 |
+|  6 | comment     |     2 |
+|  6 | committed   |     1 |
+|  6 | ds          |     1 |
+|  6 | first       |     1 |
+|  6 | foreign     |     1 |
+|  6 | hell        |     1 |
+|  6 | helldogs    |     1 |
+|  6 | here        |     2 |
+|  6 | i           |     3 |
+|  6 | is          |     3 |
+|  6 | kedar       |     1 |
+|  6 | love        |     1 |
+|  6 | loves       |     1 |
+|  6 | maullik     |     1 |
+|  6 | my          |     1 |
+|  6 | return      |     1 |
+|  6 | rock        |     1 |
+|  6 | second      |     1 |
+|  6 | swair       |     3 |
+|  6 | well        |     1 |
+|  7 | all         |     2 |
+|  7 | am          |     1 |
+|  7 | asdjlhsdsdf |     1 |
+|  7 | asdlkhr     |     1 |
+|  7 | attended    |     1 |
+|  7 | comment     |     2 |
+|  7 | committed   |     1 |
+|  7 | ds          |     1 |
+|  7 | first       |     1 |
+|  7 | foreign     |     1 |
+|  7 | hell        |     1 |
+|  7 | helldogs    |     1 |
+|  7 | here        |     2 |
+|  7 | i           |     3 |
+|  7 | is          |     3 |
+|  7 | kedar       |     1 |
+|  7 | love        |     1 |
+|  7 | loves       |     1 |
+|  7 | maullik     |     1 |
+|  7 | my          |     1 |
+|  7 | return      |     1 |
+|  7 | rock        |     1 |
+|  7 | second      |     1 |
+|  7 | swair       |     3 |
+|  7 | well        |     1 |
++----+-------------+-------+
+200 rows in set (0.00 sec)
+
+mysql> exit
