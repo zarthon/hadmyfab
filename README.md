@@ -65,3 +65,9 @@ Comments
     );
 
 
+Day 2
+=====
+* Started on figuring out on how to implement Mapper and Reducer
+* Found some examples and tutorials explaining the same, and took their reference to implement the same.
+* Current implementation is not tested, messy, not clean and involves lot of bugs
+

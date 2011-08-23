@@ -10,6 +10,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.StringTokenizer;
+
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
@@ -288,6 +291,8 @@ public class Hadmyfab
     	}
     	
     }
+    
+    /**Holds a tuple for a user as <userid, aggregate>**/
     static class AggregateRecord implements Writable, DBWritable{
     	String user_id;
     	String aggregate;
@@ -313,6 +318,7 @@ public class Hadmyfab
         }
     }
     
+    /**Holds a final output tuple as <userid,word,count> for each user**/
     static class AggregateWordCount implements Writable, DBWritable{
     	String user_id;
     	String word;
@@ -350,6 +356,36 @@ public class Hadmyfab
     	}
     }
     
+    //Trying to use the old api as i found lot of examples using the same, so for confirmation that the code is working
+    @SuppressWarnings("deprecation")
+	static class AggregateMapper extends MapReduceBase 
+    implements Mapper<LongWritable, AggregateRecord, Text, LongWritable> {
+    	LongWritable ONE = new LongWritable(1L);
+        private Text word = new Text();
+        
+        public void map(LongWritable key, AggregateRecord value, OutputCollector< Hashtable<Text,Text>, LongWritable> output, Reporter reporter)
+            throws IOException {
+        	StringTokenizer itr = new StringTokenizer(value.aggregate);
+        	while(itr.hasMoreElements()){
+        		word.set(itr.nextToken());
+        		Hashtable<Text,Text> temp = new Hashtable<Text,Text>();
+        		temp.put(new Text(value.user_id),new Text(word));
+        		output.collect(temp,ONE);
+        	}
+        }
+    }
+    @SuppressWarnings("deprecation")
+    /**This should count the number of words for each user **/
+    static class AggregateReducer extends MapReduceBase 
+    implements Reducer<Text, LongWritable, AggregateWordCount, NullWritable>{
+    	public void reduce(Text key, Iterator<LongWritable> values, OutputCollector<AggregateWordCount, NullWritable> output, Reporter reporter) throws IOException{
+    		long sum = 0L;
+    	    while(values.hasNext()) {
+    	    	sum += values.next().get();
+    	    }
+    	    output.collect(new AggregateWordCount(), arg1)
+    }
+    	
     public static void main (String[] args)
     {
         try{
