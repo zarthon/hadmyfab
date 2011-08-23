@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
@@ -22,10 +23,12 @@ import org.apache.hadoop.mapred.Reducer;
 import org.apache.hadoop.mapred.OutputCollector;
 import org.apache.hadoop.mapred.Reporter;
 //import org.apache.hadoop.mapred.jobcontrol.Job;
+import org.apache.hadoop.mapred.lib.LongSumReducer;
 import org.apache.hadoop.mapred.lib.db.DBConfiguration;
 import org.apache.hadoop.mapred.lib.db.DBInputFormat;
 import org.apache.hadoop.mapred.lib.db.DBOutputFormat;
 import org.apache.hadoop.mapred.lib.db.DBWritable;
+
 
 
 
@@ -98,7 +101,7 @@ public class MapredJob{
     //Trying to use the old api as i found lot of examples using the same, so for confirmation that the code is working
 	
 	public static class AggregateMapper extends MapReduceBase implements Mapper<LongWritable, AggregateRecord, Text, LongWritable> {
-    	LongWritable ONE = new LongWritable(1L);
+    	LongWritable ONE = new LongWritable(1);
         private Text word = new Text();
         
         public void map(LongWritable key, AggregateRecord value, OutputCollector< Text, LongWritable> output, Reporter reporter)
@@ -121,6 +124,8 @@ public class MapredJob{
     	    while(values.hasNext()) {
     	    	sum += values.next().get();
     	    }
+    	    System.out.println(sum);
+    	    System.out.println(key);
     	    String[] temp = key.toString().split("#");
     	    output.collect(new AggregateWordCount(temp[0],temp[1],sum),n);
     	}
@@ -129,14 +134,16 @@ public class MapredJob{
     
 	public static void main(String[] args) throws Exception{
     	String[] fields = {"id","word","count"};
+    	String[] agg_fields = {"id","aggregate"};
     	JobConf jobconf = new JobConf(new Configuration(),Hadmyfab.class);
     	jobconf.setJobName("Hadmyfab Mapred Job");
     	jobconf.setMapperClass(AggregateMapper.class);
     	jobconf.setReducerClass(AggregateReducer.class);
-    	jobconf.setCombinerClass(AggregateReducer.class);
+    	jobconf.setCombinerClass(LongSumReducer.class);
     	DBConfiguration.configureDB(jobconf, "com.mysql.jdbc.Driver", "jdbc:mysql://localhost/junkdb","haduser","pass");
-    	DBInputFormat.setInput(jobconf, AggregateRecord.class, "Select * from AGGREGATE;", "Select COUNT(*) from AGGREGATE");
+    	DBInputFormat.setInput(jobconf,AggregateRecord.class,"AGGREGATE",null,"id",agg_fields);
     	DBOutputFormat.setOutput(jobconf, "RESULT",fields);
+    	
     	jobconf.setMapOutputKeyClass(Text.class);
     	jobconf.setMapOutputValueClass(LongWritable.class);
     	jobconf.setOutputKeyClass(AggregateWordCount.class);

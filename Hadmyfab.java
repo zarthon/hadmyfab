@@ -254,12 +254,12 @@ public class Hadmyfab
     		while(res.next()){
     			String wall_id = res.getString("id");
     			System.out.println("You posted: "+res.getString("body"));
-    			aggregate += res.getString("body");
+    			aggregate += res.getString("body")+" ";
     			display_com.executeQuery(getComment+wall_id);
     			ResultSet coment_set = display_com.getResultSet();
     			while(coment_set.next()){
     				System.out.println("\t"+UserRId.get(coment_set.getString("user_id"))+" commented: "+coment_set.getString("body"));
-    				aggregate += coment_set.getString("body");
+    				aggregate += coment_set.getString("body")+" ";
     			}
     			System.out.println("-------------------------------------------------------------------------");
     		}
