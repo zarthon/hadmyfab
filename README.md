@@ -1,3 +1,10 @@
+This project is my first hand try at hadoop frame work and java's mysql connector.
+Hadmyfab.java creates tables according to the schema mentioned below and MapredJob.java runs a hadoop MapRed job on the
+above inserted data.
+
+The MapRed Job basically inserts Tuples (userid,word,count) into RESULT database which basically summarises the word
+counts for each word thats presented on a users so called wall. 
+
 Day 1
 =====
 
@@ -13,8 +20,8 @@ Following schema will be implemented:-
 
 TODO
 -----
-    Show aggregate data on the screen like facebook(DONE)
-    Create a map reduce job something like, outputting a wordcount on each users wall
+    Show aggregate data on the screen like facebook (DONE)
+    Create a map reduce job something like, outputting a wordcount on each users wall (DONE)
         The above requires creating a new table aggregate something like (userid,aggregated string of wall)
         Then do a mapred job of word count for each userid and store the result in db as userid,word,count with pk as
         (userid,word)
@@ -72,4 +79,5 @@ Day 2
 * Current implementation is not tested, messy, not clean and involves lot of bugs
 * Instead of combining population and mapred job into one, distributed it over the 2 files
 * Trying to debug the mapred job
-
+* Mapping done successfully, Reduce working perfectly and also added the snapshots of mysql
+* Application is ready with respect to Requirements...:D
