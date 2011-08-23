@@ -363,14 +363,12 @@ public class Hadmyfab
     	LongWritable ONE = new LongWritable(1L);
         private Text word = new Text();
         
-        public void map(LongWritable key, AggregateRecord value, OutputCollector< Hashtable<Text,Text>, LongWritable> output, Reporter reporter)
+        public void map(LongWritable key, AggregateRecord value, OutputCollector< Text, LongWritable> output, Reporter reporter)
             throws IOException {
         	StringTokenizer itr = new StringTokenizer(value.aggregate);
         	while(itr.hasMoreElements()){
         		word.set(itr.nextToken());
-        		Hashtable<Text,Text> temp = new Hashtable<Text,Text>();
-        		temp.put(new Text(value.user_id),new Text(word));
-        		output.collect(temp,ONE);
+        		output.collect(new Text(value.user_id+"#"+word),ONE);
         	}
         }
     }
@@ -378,12 +376,17 @@ public class Hadmyfab
     /**This should count the number of words for each user **/
     static class AggregateReducer extends MapReduceBase 
     implements Reducer<Text, LongWritable, AggregateWordCount, NullWritable>{
+    	
+    	NullWritable n = NullWritable.get();
+    	
     	public void reduce(Text key, Iterator<LongWritable> values, OutputCollector<AggregateWordCount, NullWritable> output, Reporter reporter) throws IOException{
-    		long sum = 0L;
+    		int sum = 0;
     	    while(values.hasNext()) {
     	    	sum += values.next().get();
     	    }
-    	    output.collect(new AggregateWordCount(), arg1)
+    	    String[] temp = key.toString().split("#");
+    	    output.collect(new AggregateWordCount(temp[0],temp[1],sum),n);
+    	}
     }
     	
     public static void main (String[] args)
